@@ -13,11 +13,11 @@ namespace Mvc_Repository.Controllers
 {
     public class CategoryController : Controller
     {
-        private ICategoryRepository categoryRepository;
+        private IRepository<Categories> categoryRepository;
 
         public CategoryController()
         {
-            this.categoryRepository = new CategoryRepository();
+            this.categoryRepository = new GenericRepository<Categories>();
         }
 
 
@@ -25,7 +25,9 @@ namespace Mvc_Repository.Controllers
         {
             using (NorthwindEntities db = new NorthwindEntities())
             {
-                var categories = this.categoryRepository.GetAll().ToList();  
+                var categories = this.categoryRepository.GetAll()
+                    .OrderBy(x => x.CategoryID)
+                    .ToList();  
                 return View(categories);
             }                    
         }
@@ -39,7 +41,7 @@ namespace Mvc_Repository.Controllers
             }
             else
             {
-                var category = this.categoryRepository.Get(id.Value);
+                var category = this.categoryRepository.Get(x => x.CategoryID == id.Value);
                 return View(category);
             }
         }
@@ -75,7 +77,7 @@ namespace Mvc_Repository.Controllers
             {
                 using (NorthwindEntities db = new NorthwindEntities())
                 {
-                    var category = this.categoryRepository.Get(id.Value);
+                    var category = this.categoryRepository.Get(x => x.CategoryID == id.Value);
                     return View(category);
                 }
             }
@@ -104,7 +106,7 @@ namespace Mvc_Repository.Controllers
             }
             else
             {
-                var category = this.categoryRepository.Get(id.Value);
+                var category = this.categoryRepository.Get(x => x.CategoryID == id.Value);
                 return View(category);
             }
         }
@@ -114,7 +116,7 @@ namespace Mvc_Repository.Controllers
         {
             try
             {
-                var category = this.categoryRepository.Get(id);
+                var category = this.categoryRepository.Get(x => x.CategoryID == id);
                 this.categoryRepository.Delete(category);
             }
             catch(DataException)

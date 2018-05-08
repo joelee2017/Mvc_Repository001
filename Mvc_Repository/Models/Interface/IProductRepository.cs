@@ -5,19 +5,8 @@ using System.Web;
 
 namespace Mvc_Repository.Models.Interface 
 {
-    public interface IProductRepository : IDisposable
+    public interface IProductRepository : IRepository<Products>
     {
-        void Create(Products instance);
-
-        void Update(Products instance);
-
-        void Delete(Products instance);
-
-        Products Get(int productID);
-
-        IQueryable<Products> GetAll();
-
-        void SaveChanges();
 
     }
 }
